@@ -1,3 +1,5 @@
+# Документация сгенерирована ИИ
+
 # TODO App Backend
 
 Containerized TODO REST API built with NestJS, TypeORM, and PostgreSQL.
