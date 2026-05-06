@@ -16,7 +16,7 @@ The TODO feature is split into controllers, services, repositories, DTOs, entiti
 Create a local Docker environment file from the example and set your own database password:
 
 ```bash
-cp .env.docker.example .env.docker
+cp .env.example .env
 ```
 
 ```bash
@@ -29,13 +29,17 @@ The API will be available at:
 http://localhost:3000
 ```
 
-PostgreSQL is exposed on `localhost:5432`. Credentials are loaded from your local `.env.docker` file:
+PostgreSQL is available only inside the Compose network. The app connects to it through the Docker service hostname configured in your local `.env` file:
 
 ```text
+DB_HOST=db
+DB_PORT=5432
 POSTGRES_DB=...
 POSTGRES_USER=...
 POSTGRES_PASSWORD=...
 ```
+
+To change host-facing settings, update `.env` instead of editing `docker-compose.yml`. For example, `APP_HOST_PORT` controls the host port that forwards to the API container.
 
 ## API
 

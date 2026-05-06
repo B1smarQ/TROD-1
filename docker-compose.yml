@@ -1,39 +1,43 @@
 services:
   app:
-    build: ./app
+    build:
+      context: ./app
     ports:
-      - "3000:3000"
-    env_file:
-      - .env
+      - "${APP_HOST_PORT}:${PORT}"
     environment:
-      PORT: 3000
-      DB_HOST: db
-      DB_PORT: 5432
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - todo-network
+      - app-network
 
   db:
-    build: ./db
-    ports:
-      - "5432:5432"
-    env_file:
-      - .env
+    build:
+      context: ./db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - todo-db-data:/var/lib/postgresql/data
+      - db-data:${DB_DATA_PATH}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - todo-network
+      - app-network
 
 networks:
   todo-network:
     driver: bridge
 
 volumes:
-  todo-db-data:
+  db-data:
+    name: todo-db-data
