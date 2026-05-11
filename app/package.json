@@ -9,8 +9,10 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",
-    "lint": "eslint \"src/**/*.ts\"",
-    "test": "jest"
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:ci": "jest --coverage --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
@@ -54,9 +56,23 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.ts",
+      "!main.ts",
+      "!**/*.spec.ts",
+      "!**/*.module.ts",
+      "!**/*.entity.ts",
+      "!**/*.dto.ts",
+      "!**/*.interface.ts"
     ],
     "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    },
     "testEnvironment": "node"
   }
 }

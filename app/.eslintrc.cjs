@@ -12,6 +12,6 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.cjs', 'dist'],
+  ignorePatterns: ['.eslintrc.cjs', 'dist', 'coverage', '**/*.d.ts'],
   rules: {},
 };
