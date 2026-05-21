@@ -129,10 +129,27 @@ jobs:
             echo "::error title=Missing Docker Hub token::Set DOCKERHUB_TOKEN as a repository secret. If it is an environment secret, add the matching environment to the docker_push job."
             exit 1
           fi
+          if [[ "${DOCKERHUB_USERNAME}" == *$'\r'* || "${DOCKERHUB_USERNAME}" == *$'\n'* || "${DOCKERHUB_USERNAME}" == *' '* ]]; then
+            echo "::error title=Malformed Docker Hub username::DOCKERHUB_USERNAME must be only your Docker Hub username, with no spaces, quotes, registry URL, or extra lines."
+            exit 1
+          fi
+          if [[ "${DOCKERHUB_TOKEN}" == *$'\r'* || "${DOCKERHUB_TOKEN}" == *$'\n'* ]]; then
+            echo "::error title=Malformed Docker Hub token::DOCKERHUB_TOKEN contains a line break. Paste only the raw Docker Hub access token value."
+            exit 1
+          fi
+          if [[ "${DOCKERHUB_TOKEN}" == "Bearer "* || "${DOCKERHUB_TOKEN}" == "Basic "* ]]; then
+            echo "::error title=Malformed Docker Hub token::DOCKERHUB_TOKEN should be the raw Docker Hub access token, not an Authorization header."
+            exit 1
+          fi
+          if [[ "${DOCKERHUB_TOKEN}" == \"* || "${DOCKERHUB_TOKEN}" == \'* ]]; then
+            echo "::error title=Malformed Docker Hub token::DOCKERHUB_TOKEN appears to include quote characters. Paste only the token value."
+            exit 1
+          fi
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
+          registry: docker.io
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_TOKEN }}
 
