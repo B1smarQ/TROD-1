@@ -28,20 +28,20 @@ describe('TodoService', () => {
     service = new TodoService(repository);
   });
 
-  // it('returns all todos as response DTOs', async () => {
-  //   const query = { completed: false };
-  //   const todos = [
-  //     makeTodo({ id: 'first-id' }),
-  //     makeTodo({ id: 'second-id', completed: true }),
-  //   ];
-  //   repository.findAll.mockResolvedValue(todos);
+  it('returns all todos as response DTOs', async () => {
+    const query = { completed: false };
+    const todos = [
+      makeTodo({ id: 'first-id' }),
+      makeTodo({ id: 'second-id', completed: true }),
+    ];
+    repository.findAll.mockResolvedValue(todos);
 
-  //   await expect(service.findAll(query)).resolves.toEqual([
-  //     expect.objectContaining({ id: 'first-id', title: 'Write tests' }),
-  //     expect.objectContaining({ id: 'second-id', completed: true }),
-  //   ]);
-  //   expect(repository.findAll).toHaveBeenCalledWith(query);
-  // });
+    await expect(service.findAll(query)).resolves.toEqual([
+      expect.objectContaining({ id: 'first-id', title: 'Write tests' }),
+      expect.objectContaining({ id: 'second-id', completed: true }),
+    ]);
+    expect(repository.findAll).toHaveBeenCalledWith(query);
+  });
 
   // it('returns one todo when it exists', async () => {
   //   const todo = makeTodo({ id: 'existing-id' });

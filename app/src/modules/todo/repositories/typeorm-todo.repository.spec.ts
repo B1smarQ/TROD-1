@@ -37,18 +37,18 @@ describe('TypeOrmTodoRepository', () => {
     todoRepository = new TypeOrmTodoRepository(repository as unknown as Repository<TodoEntity>);
   });
 
-  // it('finds all todos ordered by newest first', async () => {
-  //   const todos = [makeTodo()];
-  //   repository.find.mockResolvedValue(todos);
+  it('finds all todos ordered by newest first', async () => {
+    const todos = [makeTodo()];
+    repository.find.mockResolvedValue(todos);
 
-  //   await expect(todoRepository.findAll({})).resolves.toBe(todos);
-  //   expect(repository.find).toHaveBeenCalledWith({
-  //     where: {},
-  //     order: {
-  //       createdAt: 'DESC',
-  //     },
-  //   });
-  // });
+    await expect(todoRepository.findAll({})).resolves.toBe(todos);
+    expect(repository.find).toHaveBeenCalledWith({
+      where: {},
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  });
 
   // it('filters todos by completion status', async () => {
   //   repository.find.mockResolvedValue([]);
