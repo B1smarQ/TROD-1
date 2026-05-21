@@ -108,6 +108,7 @@ jobs:
   docker_push:
     name: docker_push
     runs-on: ubuntu-latest
+    environment: CI
     needs:
       - docker_build
     if: github.event_name == 'push'
