@@ -94,4 +94,7 @@ describe('TodoService', () => {
     await expect(service.remove('missing-id')).rejects.toThrow(NotFoundException);
     expect(repository.delete).not.toHaveBeenCalled();
   });
+  it('false test', async() => {
+    expect(1==2);
+  })
 });
