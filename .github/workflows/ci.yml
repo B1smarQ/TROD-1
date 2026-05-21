@@ -113,7 +113,7 @@ jobs:
       - docker_build
     if: github.event_name == 'push'
     env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME || vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME || secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
       - name: Checkout
@@ -131,6 +131,10 @@ jobs:
           fi
           if [[ "${DOCKERHUB_USERNAME}" == *$'\r'* || "${DOCKERHUB_USERNAME}" == *$'\n'* || "${DOCKERHUB_USERNAME}" == *' '* ]]; then
             echo "::error title=Malformed Docker Hub username::DOCKERHUB_USERNAME must be only your Docker Hub username, with no spaces, quotes, registry URL, or extra lines."
+            exit 1
+          fi
+          if [[ ! "${DOCKERHUB_USERNAME}" =~ ^[a-z0-9]{4,30}$ ]]; then
+            echo "::error title=Malformed Docker Hub username::DOCKERHUB_USERNAME must be your Docker ID, not your email address, token name, registry URL, or username:token pair. Docker IDs are 4-30 lowercase letters/numbers."
             exit 1
           fi
           if [[ "${DOCKERHUB_TOKEN}" == *$'\r'* || "${DOCKERHUB_TOKEN}" == *$'\n'* ]]; then
